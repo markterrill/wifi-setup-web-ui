@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smartfire Direct Mode</title>
+    <link rel="stylesheet" href="/styles.css?test=22" crossorigin="anonymous">
+    <link rel="stylesheet" href="/pure.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+
+</head>
+<body>
+
+
+<div class="header">
+    <div class="home-menu pure-menu pure-menu-horizontal">
+        <a class="pure-menu-heading" href="/index.html">
+            <img src="/logowhiteRedForBlack250px.png" class="sflogo">
+        </a>
+
+        <ul class="pure-menu-list">
+            <li class="pure-menu-item"><a href="/index.html" class="pure-menu-link">Device</a></li>
+            <li class="pure-menu-item selected"><a href="/status.html" class="pure-menu-link">Status</a></li>
+        </ul>
+
+    </div>
+</div>
+
+<div id="container-status">
+    <div class="splash-container darkgray">
+        <div>
+            <h1 class="white">Direct mode</h1>
+        </div>
+    </div>
+</div>
+
+</body>
+<script src="json-rpc-ws.js"></script>
+<script type="module" src="status.js"></script>
+</html>
