@@ -2360,15 +2360,19 @@ module.exports = ws
 },{"charenc":4,"crypt":5,"is-buffer":6}],9:[function(require,module,exports){
 (function (Buffer){(function (){
 const WebSocket = require('isomorphic-ws');
-
 const md5 = require('md5');
-
 var ws = new WebSocket("ws://smartfire.local/rpc");
 
+/*
+let deviceID= 'SF_CTL5_D09CCC';
+let pub64 ="LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUZrd0V3WUhLb1pJemowQ0FRWUlLb1pJemowREFRY0RRZ0FFQ0xSRWU3d1U2UW5xMUorZVRRbnhpQzl5cERTUAp1ZzcxOXlNRFB2RWxYWk4zdjdLTDdwR0pBYUdDb2dWU3BZcHNra2I0Q08xRU1kdEhkdVRYRExwWlRBPT0KLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==";
+let key64="LS0tLS1CRUdJTiBFQyBQUklWQVRFIEtFWS0tLS0tCk1IY0NBUUVFSU9JNWU5Z21NYkNoQ3FLRllUdVpqV1g0NmM0WTRLaUJFdnJwa3Y4akJQaW9vQW9HQ0NxR1NNNDkKQXdFSG9VUURRZ0FFYlFVSytFdWlDYjRQMWlrWFBqUXJHNVQ3ZE0vVmZzREZlTDFxRGxiZG4zU011QmlYRkN4ZwpHMEtNM3ZRcXA5azdvMVppSi90OTNTellrdW9YVEltYmpnPT0KLS0tLS1FTkQgRUMgUFJJVkFURSBLRVktLS0tLQo=";
+*/
 
-let deviceID= 'SF_CTL5_CF15F0';
-let pub64 ="LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUZrd0V3WUhLb1pJemowQ0FRWUlLb1pJemowREFRY0RRZ0FFZ3UzdXJUNENNcDNWV3lzUnludDlUbWJjajA3dQpUeFV5MTdBdjBrdHBrZitoanFwK0pVVzR6TmV0dXhwbDY4QUhlY0lWZ0trVy93RnR2RXd6dG5JcHR3PT0KLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==";
-let key64="LS0tLS1CRUdJTiBFQyBQUklWQVRFIEtFWS0tLS0tCk1IY0NBUUVFSUk4anRCejZJT0crODFZRS9LSlRDcXhHZFNOMW9PV2pLWUljdFI4MmJLbmtvQW9HQ0NxR1NNNDkKQXdFSG9VUURRZ0FFZ3UzdXJUNENNcDNWV3lzUnludDlUbWJjajA3dVR4VXkxN0F2MGt0cGtmK2hqcXArSlVXNAp6TmV0dXhwbDY4QUhlY0lWZ0trVy93RnR2RXd6dG5JcHR3PT0KLS0tLS1FTkQgRUMgUFJJVkFURSBLRVktLS0tLQo=";
+
+let deviceID="SF_CTL5_D0BE3C";
+let pub64="LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUZrd0V3WUhLb1pJemowQ0FRWUlLb1pJemowREFRY0RRZ0FFYlFVSytFdWlDYjRQMWlrWFBqUXJHNVQ3ZE0vVgpmc0RGZUwxcURsYmRuM1NNdUJpWEZDeGdHMEtNM3ZRcXA5azdvMVppSi90OTNTellrdW9YVEltYmpnPT0KLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==";
+let key64="LS0tLS1CRUdJTiBFQyBQUklWQVRFIEtFWS0tLS0tCk1IY0NBUUVFSU9JNWU5Z21NYkNoQ3FLRllUdVpqV1g0NmM0WTRLaUJFdnJwa3Y4akJQaW9vQW9HQ0NxR1NNNDkKQXdFSG9VUURRZ0FFYlFVSytFdWlDYjRQMWlrWFBqUXJHNVQ3ZE0vVmZzREZlTDFxRGxiZG4zU011QmlYRkN4ZwpHMEtNM3ZRcXA5azdvMVppSi90OTNTellrdW9YVEltYmpnPT0KLS0tLS1FTkQgRUMgUFJJVkFURSBLRVktLS0tLQo=";
 
 
 // echo '{"src":"rpc","id":'$rpcNumber''',"method":"OTA.Update","params":{"url":"'$ZIPURL'","commit_timeout":240}}' > mycommandOTA.txt
@@ -2404,9 +2408,6 @@ function authCmd(cmd, challenge){
     let user = "appuser";
     let realm = "sdbproduct";
     let pass = "appUserfiveoh";
-
-    user = 'serialAdmin';
-    pass = '444SerialKeyboardWarrior';
 
     let qop = '';
 
@@ -2540,6 +2541,15 @@ ws.onopen = function open() {
         ws.send(createCmd('Config.Get', {}));
 
     }, timeout +=increase);
+
+
+
+    setTimeout(()=>{
+
+        console.log('retrieving config.get');
+        ws.send(createCmd('SF.Restart', {}));
+
+    }, timeout +=increase + 5000) ;
 
 
 

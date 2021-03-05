@@ -1,17 +1,10 @@
 const WebSocket = require('isomorphic-ws');
 const md5 = require('md5');
-var ws = new WebSocket("ws://smartfire.local/rpc");
+var ws = new WebSocket("ws://myproduct.local/rpc");
 
-/*
-let deviceID= 'SF_CTL5_D09CCC';
-let pub64 ="LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUZrd0V3WUhLb1pJemowQ0FRWUlLb1pJemowREFRY0RRZ0FFQ0xSRWU3d1U2UW5xMUorZVRRbnhpQzl5cERTUAp1ZzcxOXlNRFB2RWxYWk4zdjdLTDdwR0pBYUdDb2dWU3BZcHNra2I0Q08xRU1kdEhkdVRYRExwWlRBPT0KLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==";
-let key64="LS0tLS1CRUdJTiBFQyBQUklWQVRFIEtFWS0tLS0tCk1IY0NBUUVFSUhsNWxTWWhpTnQySExLREZLK3prU2dUKzJJaWg3aUpBWENDU1J4TUdhenpvQW9HQ0NxR1NNNDkKQXdFSG9VUURRZ0FFZG9vc0tyOThQNUR1QUFrbDRmcHZqa1JuRWFIVjJVVWtjdzZVdk5oZFdWb21Yek5MMnRLUwozUTRLM29ORWJWMExndFE3YVBzRlVmdkFiVWd3ZHlaYkFBPT0KLS0tLS1FTkQgRUMgUFJJVkFURSBLRVktLS0tLQo=";
-*/
-
-
-let deviceID="SF_CTL5_D06040";
-let pub64="LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUZrd0V3WUhLb1pJemowQ0FRWUlLb1pJemowREFRY0RRZ0FFZG9vc0tyOThQNUR1QUFrbDRmcHZqa1JuRWFIVgoyVVVrY3c2VXZOaGRXVm9tWHpOTDJ0S1MzUTRLM29ORWJWMExndFE3YVBzRlVmdkFiVWd3ZHlaYkFBPT0KLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==";
-let key64="LS0tLS1CRUdJTiBFQyBQUklWQVRFIEtFWS0tLS0tCk1IY0NBUUVFSUhsNWxTWWhpTnQySExLREZLK3prU2dUKzJJaWg3aUpBWENDU1J4TUdhenpvQW9HQ0NxR1NNNDkKQXdFSG9VUURRZ0FFZG9vc0tyOThQNUR1QUFrbDRmcHZqa1JuRWFIVjJVVWtjdzZVdk5oZFdWb21Yek5MMnRLUwozUTRLM29ORWJWMExndFE3YVBzRlVmdkFiVWd3ZHlaYkFBPT0KLS0tLS1FTkQgRUMgUFJJVkFURSBLRVktLS0tLQo=";
+let deviceID="SF_XXXX_D09CCC";
+let pub64="LS0tLS1CRURbnhpQzl5cERTUAp1ZzcxOXlNRFB2RWxYWk4zdjdLTDdwR0pBYUdDb2dWU3BZcHNra2I0Q08xRU1kdEhkdVRYRExwWlRBPT0KLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==";
+let key64="LS0tLS1CRUdJTiRWU3d1U2UW5xMUorZVRRbnhpQzl5cERTUHVnNzE5eU1EUHZFbFhaTjN2N0tMN3BHSgpBYUdDb2dWU3BZcHNra2I0Q08xRU1kdEhkdVRYRExwWlRBPT0KLS0tLS1FTkQgRUMgUFJJVkFURSBLRVktLS0tLQo=";
 
 
 // echo '{"src":"rpc","id":'$rpcNumber''',"method":"OTA.Update","params":{"url":"'$ZIPURL'","commit_timeout":240}}' > mycommandOTA.txt
@@ -44,9 +37,9 @@ function createCmd(method, params){
 }
 
 function authCmd(cmd, challenge){
-    let user = "appuser";
-    let realm = "sdbproduct";
-    let pass = "appUserfiveoh";
+    let user = "myuser";
+    let realm = "myproductrealm";
+    let pass = "password";
 
     let qop = '';
 
@@ -54,34 +47,6 @@ function authCmd(cmd, challenge){
     let nonce = challenge.nonce;
     let nc = challenge.nc;
 
-    /*
-
-    {"id":1602514362591,"src":"SF_CTL5_D0BE3C","dst":"mos","error":{"code":401,"message":"{\"auth_type\": \"digest\",
-    \"nonce\": 1611048929, \"nc\": 1, \"realm\": \"sdbproduct\"}"}}
-
-    {"src":"mos","id":1602514362591,"method":"Config.Get","auth":{"realm":"sdbproduct","username":"serialAdmin",
-    "nonce":1611048929,"cnonce":313673957,"response":"66e9cdd290e93ea623b1f415f10e62a7"}
-
-    Got 401 challenge {"auth_type": "digest", "nonce": 1611049154, "nc": 1, "realm": "sdbproduct"}
-
-working
-{"src":"mos","id":1373120017684,"method":"Config.Get","auth":{"realm":"sdbproduct","username":"serialAdmin","nonce":1611051797,"cnonce":1955363828,"response":"5ded50da1c0dee25e2f9a56e1ef815b4"}}
-not
-{"src":"rpc","id":1611051886168,"method":"Config.Get","auth":{"realm":"sdbproduct","username":"appuser","cnonce":313673957,"response":"ec3e58ee6fc53d5f390f0d3820e2561b"}}
-
-
-     Got auth: Realm:sdbproduct, Username:serialAdmin, Nonce: 1611052267, CNonce:748545482, Response:7a374cd93d622a2a9e659389bce62351
-     Got auth: Realm:sdbproduct, Username:serialAdmin, Nonce: 1611052290, CNonce:313673957, Response:2a4d6b45cd34e5d8bdbf5da897bba2ab
-     */
-
-
-    /*
-    HA1 = MD5(username:realm:password);
-    HA2 = MD5(method:digestURI);
-    response = MD5(HA1:nonce:HA2);
-     */
-
-    //let nonce = nonce;
     digestURI.method = "dummy_method";
     digestURI.path = "dummy_uri";
 
@@ -89,28 +54,11 @@ not
     let HA2 = md5(digestURI.method + ":" + digestURI.path);
     let combined = HA1 + ":" + nonce + ":" + nc + ":" + cnonce + ":" + "auth" + ":" + HA2;
     let response = md5(combined);
-    /*
-    console.log("HA1: \t",  user + ":" + realm + ":" + pass);
-    console.log("HA2: \t",  digestURI.method + ":" + digestURI.path);
 
-     */
-
-    /*
-    respArr := md5.Sum([]byte(fmt.Sprintf(
-        "%s:%d:%d:%d:%s:%s",
-        ha1, nonce, nc, cnonce, "auth", ha2,
-    )))
-
-     */
 
 
 
     console.log("\n\n", combined);
-
-    //let response = md5(HA1 + ":" + nonce + HA2); //":00000001:" + cnonce + ":" + qop + ":" + HA2);
-    //let response = md5(combined); //":00000001:" + cnonce + ":" + qop + ":" + HA2);
-    //options.headers.Authorization = "Digest username=\"" + user + "\",realm=\"" + realm + "\",nonce=\"" + nonce + "\",uri=\"" + options.path + "\",cnonce=\"" + cnonce + "\",nc=00000001,algorithm=MD5,response=\"" + response + "\",qop=\"" + qop + "\"";
-
 
     let newCmd = cmd;// cmdHistory[parsed.id];
 
@@ -211,8 +159,8 @@ function conf8(){
         "gcp": {
             "enable": true,
             "server": "mqtt.2030.ltsapis.goog:8883",
-            "project": "firebase-sdb",
-            "region": "us-central1",
+            "project": "firebase-xxxxx",
+            "region": "us-xxxxxx",
             "registry": "iot-registry",
             "device": deviceID,
             "key": "gcp-" + deviceID + ".key.pem",
@@ -254,9 +202,7 @@ function pubpem(){
             "data": pub64 //pubBuf.toString('base64')     // Required. Data to write.
         };
 
-    //let content = JSON.stringify(params);
     ws.send(createCmd('FS.Put', params));
-
 
 }
 
@@ -313,18 +259,14 @@ ws.onmessage = function incoming(event) {
 
     // See if unauthorised
     if (parsed.hasOwnProperty('error') && parsed.error.hasOwnProperty('code') && parsed.error.code == 401){
+        // Not currently using this, as sending auth with original request!
 
         console.log("Got 401 challenge", parsed.error.message);
 
         let challenge = JSON.parse(parsed.error.message);
 
         if (mybool){
-
-
-            ws.send(textVersion);
-
-
-
+           ws.send(textVersion);
         }
 
 

@@ -2360,15 +2360,19 @@ module.exports = ws
 },{"charenc":4,"crypt":5,"is-buffer":6}],9:[function(require,module,exports){
 (function (Buffer){(function (){
 const WebSocket = require('isomorphic-ws');
-
 const md5 = require('md5');
-
 var ws = new WebSocket("ws://smartfire.local/rpc");
 
+/*
+let deviceID= 'SF_CTL5_D09CCC';
+let pub64 ="LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUZrd0V3WUhLb1pJemowQ0FRWUlLb1pJemowREFRY0RRZ0FFQ0xSRWU3d1U2UW5xMUorZVRRbnhpQzl5cERTUAp1ZzcxOXlNRFB2RWxYWk4zdjdLTDdwR0pBYUdDb2dWU3BZcHNra2I0Q08xRU1kdEhkdVRYRExwWlRBPT0KLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==";
+let key64="LS0tLS1CRUdJTiBFQyBQUklWQVRFIEtFWS0tLS0tCk1IY0NBUUVFSVB1VG1rZkFtNzNSbHN0UjJRWGgveUo0RnNLWXNVMHpIckdhSnVpSk8yNGhvQW9HQ0NxR1NNNDkKQXdFSG9VUURRZ0FFQ1hHNkxGeUlYQWZkcmRzV2NKWFdWS0h3L09MYUxRRVVRYXppSWtnRnk1bTU3V094SWhRNwpza25BZ0RpZm83cjU4Wm9qTU1panplTDB2bUZnUmd5RW1nPT0KLS0tLS1FTkQgRUMgUFJJVkFURSBLRVktLS0tLQo=";
+*/
 
-let deviceID= 'SF_CTL5_CF15F0';
-let pub64 ="LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUZrd0V3WUhLb1pJemowQ0FRWUlLb1pJemowREFRY0RRZ0FFZ3UzdXJUNENNcDNWV3lzUnludDlUbWJjajA3dQpUeFV5MTdBdjBrdHBrZitoanFwK0pVVzR6TmV0dXhwbDY4QUhlY0lWZ0trVy93RnR2RXd6dG5JcHR3PT0KLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==";
-let key64="LS0tLS1CRUdJTiBFQyBQUklWQVRFIEtFWS0tLS0tCk1IY0NBUUVFSUk4anRCejZJT0crODFZRS9LSlRDcXhHZFNOMW9PV2pLWUljdFI4MmJLbmtvQW9HQ0NxR1NNNDkKQXdFSG9VUURRZ0FFZ3UzdXJUNENNcDNWV3lzUnludDlUbWJjajA3dVR4VXkxN0F2MGt0cGtmK2hqcXArSlVXNAp6TmV0dXhwbDY4QUhlY0lWZ0trVy93RnR2RXd6dG5JcHR3PT0KLS0tLS1FTkQgRUMgUFJJVkFURSBLRVktLS0tLQo=";
+
+let deviceID="SF_CTL5_D09D50";
+let pub64="LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUZrd0V3WUhLb1pJemowQ0FRWUlLb1pJemowREFRY0RRZ0FFQ1hHNkxGeUlYQWZkcmRzV2NKWFdWS0h3L09MYQpMUUVVUWF6aUlrZ0Z5NW01N1dPeEloUTdza25BZ0RpZm83cjU4Wm9qTU1panplTDB2bUZnUmd5RW1nPT0KLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==";
+let key64="LS0tLS1CRUdJTiBFQyBQUklWQVRFIEtFWS0tLS0tCk1IY0NBUUVFSVB1VG1rZkFtNzNSbHN0UjJRWGgveUo0RnNLWXNVMHpIckdhSnVpSk8yNGhvQW9HQ0NxR1NNNDkKQXdFSG9VUURRZ0FFQ1hHNkxGeUlYQWZkcmRzV2NKWFdWS0h3L09MYUxRRVVRYXppSWtnRnk1bTU3V094SWhRNwpza25BZ0RpZm83cjU4Wm9qTU1panplTDB2bUZnUmd5RW1nPT0KLS0tLS1FTkQgRUMgUFJJVkFURSBLRVktLS0tLQo=";
 
 
 // echo '{"src":"rpc","id":'$rpcNumber''',"method":"OTA.Update","params":{"url":"'$ZIPURL'","commit_timeout":240}}' > mycommandOTA.txt
@@ -2404,9 +2408,6 @@ function authCmd(cmd, challenge){
     let user = "appuser";
     let realm = "sdbproduct";
     let pass = "appUserfiveoh";
-
-    user = 'serialAdmin';
-    pass = '444SerialKeyboardWarrior';
 
     let qop = '';
 
@@ -2528,7 +2529,7 @@ ws.onopen = function open() {
 
     setTimeout(()=>{
 
-        console.log('sending conf8');
+        console.log('sending conf8 ');
 
         conf8();
 
@@ -2541,6 +2542,16 @@ ws.onopen = function open() {
 
     }, timeout +=increase);
 
+
+
+    setTimeout(()=>{
+
+        document.getElementById('status').innerHTML = "Finished, can power cycle now";
+
+        //console.log('Calling restart');
+        //ws.send(createCmd('SF.Restart', {}));
+
+    }, timeout +=increase ) ;
 
 
 
@@ -2599,7 +2610,7 @@ function pubpem(){
 
     let params =
         {
-            "filename": "gcp-SF_CTL5_D0BC64.pub.pem",    // Required. Name of the file to write to.
+            "filename": "gcp-" + deviceID + ".pub.pem",    // Required. Name of the file to write to.
             "append": false,          // Optional. Overwrite or append.
             "data": pub64 //pubBuf.toString('base64')     // Required. Data to write.
         };
@@ -2614,7 +2625,7 @@ function pubpem(){
 function getpem(){
 
     let params = {
-        "filename": "gcp-SF_CTL5_D0BC64.pub.pem",    // Required. Name of the file to write to.
+        "filename": "gcp-" + deviceID + ".pub.pem",    // Required. Name of the file to write to.
     };
 
     let content = JSON.stringify(params);
@@ -2628,7 +2639,7 @@ function keypem(){
 
     let params =
         {
-            "filename": "gcp-SF_CTL5_D0BC64.key.pem",    // Required. Name of the file to write to.
+            "filename": "gcp-" + deviceID + ".key.pem",    // Required. Name of the file to write to.
             "append": false,          // Optional. Overwrite or append.
             "data": key64 //pubBuf.toString('base64')     // Required. Data to write.
         };
@@ -2643,7 +2654,7 @@ function keypem(){
 function keyget(){
 
     let params = {
-        "filename": "gcp-SF_CTL5_D0BC64.key.pem",    // Required. Name of the file to write to.
+        "filename": "gcp-" + deviceID + ".key.pem",    // Required. Name of the file to write to.
     };
 
     let content = JSON.stringify(params);
@@ -2657,7 +2668,7 @@ ws.onmessage = function incoming(event) {
     console.log("received: ", event.data);
 
 
-    document.getElementById('text1').innerHTML += "\n\n\n\n" +  event.data;
+    document.getElementById('text1').innerHTML += "<br><hr><br>" +  JSON.stringify(JSON.parse(event.data), null, 4);
 
     let parsed = JSON.parse(event.data);
 
