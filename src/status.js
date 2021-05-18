@@ -117,6 +117,7 @@ class App extends Component {
       pass: '',
       status: null,
         config: null,
+        info: null,
       spin: false,
       frames: []};
 
@@ -138,12 +139,11 @@ class App extends Component {
         rpc.onopen = ev => {
             // When RPC is connected, fetch list of supported RPC services
             this.setState({connected: true});
-            rpc.call('RPC.List').then(res => {
-                console.log(res);
-
-
-
-
+            rpc.call('SF.Info').then(res => {
+                console.log("info:", res);
+                if (res.src){
+                    this.setState({info: res.result});
+                }
             });
             this.myStatusInterval = setInterval(() => {
                 this.checkStatus();
@@ -186,6 +186,9 @@ class App extends Component {
             .then(data => {
                 console.log('Status:', data);
                 if (data.hasOwnProperty('result')){
+
+
+
                     let classes = {
                         'alert': 'exclamation-triangle',
                         'good': 'check-square',
@@ -320,7 +323,8 @@ class App extends Component {
 		
          <div class="splash-container darkgray">
             <div>
-                <h1 class="white">Direct mode: ${state.connected ? 'Connected' : 'Not Connected!'}</h1>
+                <h1 class="white">Direct mode: ${(state.connected && state.info) ? state.info.id + ' Connected' : 'Not Connected!'}</h1>
+                
             </div>
         </div>
     

@@ -2,10 +2,53 @@
 //console.log(process.versions);
 //var process = require("node-process");
 
+/*
+how to fix error with
+
+
+vi node_modules/urllib/lib/urllib.js
+change NODE_MAJOR_VERSION line to
+var NODE_MAJOR_VERSION = 0;
+
+ */
+
 let mytestBuf = Buffer.from('test');
 
 const httpClient = require('urllib');
 const url = 'http://smartfire.local/RPC/';
+
+let currentDelay = 0;
+
+
+console.log("window: ", window.location.href);
+
+setTimeout(() => {
+
+    var foundIt = false;
+
+    (new URL(window.location.href)).searchParams.forEach((x, y) =>{
+
+            console.log("search param", x, y);
+
+            if (y == "address"){
+                console.log('current', document.getElementById(y).value);
+
+                document.getElementById(y).value = x;
+
+                foundIt = true;
+            }
+
+
+
+
+
+        }
+    );
+
+    console.log("foundit", foundIt );
+
+}, currentDelay+=500);
+
 
 
 let options = {
@@ -53,6 +96,7 @@ let key64="LS0tLS1CRUdJTiBFQyBQUklWQVRFIEtFWS0tLS0tCk1IY0NBUUVFSU9JNWU5Z21NYkNoQ
 ;
 //let keyBuf = new Buffer.from(pub);
 
+setTimeout(()=>{
 let params =
     {
         "filename": "gcp-SF_CTL5_D0BE3C.pub.pem",    // Required. Name of the file to write to.
@@ -65,7 +109,7 @@ options.content = JSON.stringify(params);
 console.log(options.content);
 
 var req = httpClient.request(url + 'FS.Put', options, responseHandler);
-
+}, currentDelay +=1000);
 
 
 setTimeout(()=>{
@@ -82,7 +126,7 @@ setTimeout(()=>{
     console.log(options.content);
 
     var req = httpClient.request(url + 'FS.Put', options, responseHandler);
-}, 2000);
+}, currentDelay +=2000);
 
 
 
@@ -133,4 +177,4 @@ setTimeout(()=>{
     options.content = JSON.stringify(params);
     var req = httpClient.request(url + 'FS.Put', options, responseHandler);
 
-}, 4000);
+}, currentDelay+=2000);

@@ -2361,22 +2361,18 @@ module.exports = ws
 (function (Buffer){(function (){
 const WebSocket = require('isomorphic-ws');
 const md5 = require('md5');
-
-var currentDelay = 0;
-
-var deviceAddress = 'smartfire.local';
-
+var ws = new WebSocket("ws://smartfire.local/rpc");
 
 /*
 let deviceID= 'SF_CTL5_D09CCC';
 let pub64 ="LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUZrd0V3WUhLb1pJemowQ0FRWUlLb1pJemowREFRY0RRZ0FFQ0xSRWU3d1U2UW5xMUorZVRRbnhpQzl5cERTUAp1ZzcxOXlNRFB2RWxYWk4zdjdLTDdwR0pBYUdDb2dWU3BZcHNra2I0Q08xRU1kdEhkdVRYRExwWlRBPT0KLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==";
-let key64="LS0tLS1CRUdJTiBFQyBQUklWQVRFIEtFWS0tLS0tCk1IY0NBUUVFSUJLWHR3R3hOcERXY1BaRWZSSHV2dXpBakYrTVkvZFZxWmtCLzdmWHZndm9vQW9HQ0NxR1NNNDkKQXdFSG9VUURRZ0FFSzZud0JzSjNVUmMyR1NtN3dzWWNWNUJjSHBhZEtZd3hoQ05iSlZxUE1aWmZXYURXNGhmVwpQUU9ZVXl3S09XZ0ZTNVZaV1B5ZjV6ckxhWlpJcUQ4OEx3PT0KLS0tLS1FTkQgRUMgUFJJVkFURSBLRVktLS0tLQo=";
+let key64="LS0tLS1CRUdJTiBFQyBQUklWQVRFIEtFWS0tLS0tCk1IY0NBUUVFSVBqd0x2YmhSUUdENElEQlI5anE4bkJnSEZ3WDdWOGc4R0FsMkY5ejVJZzZvQW9HQ0NxR1NNNDkKQXdFSG9VUURRZ0FFQXdtdDMwZHFqR01VTzFNUnFUVVRHWjJvcUVUVDNuWTlEQjBITTJyTW5aVE5BbDJjdjBWNQozWTVGSHpyVzVPdURvQkpwaC9qaDdKSVVjZUpaU2t5UmFRPT0KLS0tLS1FTkQgRUMgUFJJVkFURSBLRVktLS0tLQo=";
 */
 
 
-let deviceID = "SF_CTL5_D426A8";
-let pub64 = "LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUZrd0V3WUhLb1pJemowQ0FRWUlLb1pJemowREFRY0RRZ0FFSzZud0JzSjNVUmMyR1NtN3dzWWNWNUJjSHBhZApLWXd4aENOYkpWcVBNWlpmV2FEVzRoZldQUU9ZVXl3S09XZ0ZTNVZaV1B5ZjV6ckxhWlpJcUQ4OEx3PT0KLS0tLS1FTkQgUFVCTElDIEtFWS0tLS0tCg==";
-let key64 = "LS0tLS1CRUdJTiBFQyBQUklWQVRFIEtFWS0tLS0tCk1IY0NBUUVFSUJLWHR3R3hOcERXY1BaRWZSSHV2dXpBakYrTVkvZFZxWmtCLzdmWHZndm9vQW9HQ0NxR1NNNDkKQXdFSG9VUURRZ0FFSzZud0JzSjNVUmMyR1NtN3dzWWNWNUJjSHBhZEtZd3hoQ05iSlZxUE1aWmZXYURXNGhmVwpQUU9ZVXl3S09XZ0ZTNVZaV1B5ZjV6ckxhWlpJcUQ4OEx3PT0KLS0tLS1FTkQgRUMgUFJJVkFURSBLRVktLS0tLQo=";
+let deviceID="SF_CTL5_D41F10";
+let pub64="LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUJJRENCeUFJSkFQU0lodTEvMUh6NE1Bb0dDQ3FHU000OUJBTUNNQmt4RnpBVkJnTlZCQU1NRGxOR1gwTlUKVERWZlJEUXhSakV3TUI0WERUSXhNRE15TXpBd01UUXhNMW9YRFRNd01USXlOREF3TVRReE0xb3dHVEVYTUJVRwpBMVVFQXd3T1UwWmZRMVJNTlY5RU5ERkdNVEF3V1RBVEJnY3Foa2pPUFFJQkJnZ3Foa2pPUFFNQkJ3TkNBQVFECkNhM2ZSMnFNWXhRN1V4R3BOUk1abmFpb1JOUGVkajBNSFFjemFzeWRsTTBDWFp5L1JYbmRqa1VmT3RiazY0T2cKRW1tSCtPSHNraFJ4NGxsS1RKRnBNQW9HQ0NxR1NNNDlCQU1DQTBjQU1FUUNJRWV2RHFDK2kzWmJMcUJGN0tkbApyTG5nVXZUZGI2cGorTkgrclE1ZG51TzZBaUJVY0hxa2srdHhGWk96SUhGbGVadStRc2YyWlBwdEtDYjRPUW15CmdYdzhCUT09Ci0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K";
+let key64="LS0tLS1CRUdJTiBFQyBQUklWQVRFIEtFWS0tLS0tCk1IY0NBUUVFSVBqd0x2YmhSUUdENElEQlI5anE4bkJnSEZ3WDdWOGc4R0FsMkY5ejVJZzZvQW9HQ0NxR1NNNDkKQXdFSG9VUURRZ0FFQXdtdDMwZHFqR01VTzFNUnFUVVRHWjJvcUVUVDNuWTlEQjBITTJyTW5aVE5BbDJjdjBWNQozWTVGSHpyVzVPdURvQkpwaC9qaDdKSVVjZUpaU2t5UmFRPT0KLS0tLS1FTkQgRUMgUFJJVkFURSBLRVktLS0tLQo=";
 
 
 // echo '{"src":"rpc","id":'$rpcNumber''',"method":"OTA.Update","params":{"url":"'$ZIPURL'","commit_timeout":240}}' > mycommandOTA.txt
@@ -2394,380 +2390,342 @@ digestURI.path = "dummy_uri";
 
 var startedConnection = false;
 
+ws.onerror = function incoming(err){
 
-setTimeout(() => {
+    console.log('error received: ', err);
 
-    var foundIt = false;
+}
 
+ws.onclose = function incoming(event){
 
-    (new URL(window.location.href)).searchParams.forEach((x, y) => {
+    console.log('onclose received ', event);
+}
 
-            console.log("search param", x, y);
+function createCmd(method, params){
 
-            if (y == "address") {
-                console.log('current', document.getElementById(y).value);
+    let id = Date.now();
+    let base = {"src":"rpc","id":id,"method":method};
 
-                document.getElementById(y).value = x;
-
-                if (x.length > 2) {
-                    deviceAddress = x;
-                }
-
-                foundIt = true;
-            }
-
-        }
-    );
-
-    console.log("foundit", foundIt);
-
-    var ws = new WebSocket("ws://" + deviceAddress + "/rpc");
-
-    let mybool = false;
-
-
-
-
-
-    function createCmd(method, params) {
-
-        let id = Date.now();
-        let base = {"src": "rpc", "id": id, "method": method};
-
-        if (Object.keys(params).length) {
-            base.params = params;
-        }
-
-        //cmdHistory[id] = base;
-
-
-
-        cmdHistory[id] = authCmd(base, {nonce: Math.floor(new Date().getTime() / 1000) - 1 , nc: 1});
-
-        return JSON.stringify(cmdHistory[id]);
+    if (Object.keys(params).length){
+        base.params = params;
     }
 
-    function authCmd(cmd, challenge) {
-        let user = "appuser";
-        let realm = "sdbproduct";
-        let pass = "appUserfiveoh";
+    //cmdHistory[id] = base;
 
-        let qop = '';
+    cmdHistory[id] = authCmd(base, {nonce: new Date().getTime(), nc:1});
 
-        let cnonce = Math.floor(new Date().getTime() / 1000) - 1; //md5(String(new Date().getTime()));  313673957; //
-        let nonce = challenge.nonce;
-        let nc = challenge.nc;
+    return JSON.stringify(cmdHistory[id]);
+}
 
-        /*
+function authCmd(cmd, challenge){
+    let user = "appuser";
+    let realm = "sdbproduct";
+    let pass = "appUserfiveoh";
 
-        {"id":1602514362591,"src":"SF_CTL5_D0BE3C","dst":"mos","error":{"code":401,"message":"{\"auth_type\": \"digest\",
-        \"nonce\": 1611048929, \"nc\": 1, \"realm\": \"sdbproduct\"}"}}
+    let qop = '';
 
-        {"src":"mos","id":1602514362591,"method":"Config.Get","auth":{"realm":"sdbproduct","username":"serialAdmin",
-        "nonce":1611048929,"cnonce":313673957,"response":"66e9cdd290e93ea623b1f415f10e62a7"}
+    let cnonce = new Date().getTime(); //md5(String(new Date().getTime()));  313673957; //
+    let nonce = challenge.nonce;
+    let nc = challenge.nc;
 
-        Got 401 challenge {"auth_type": "digest", "nonce": 1611049154, "nc": 1, "realm": "sdbproduct"}
+    /*
 
-    working
-    {"src":"mos","id":1373120017684,"method":"Config.Get","auth":{"realm":"sdbproduct","username":"serialAdmin","nonce":1611051797,"cnonce":1955363828,"response":"5ded50da1c0dee25e2f9a56e1ef815b4"}}
-    not
-    {"src":"rpc","id":1611051886168,"method":"Config.Get","auth":{"realm":"sdbproduct","username":"appuser","cnonce":313673957,"response":"ec3e58ee6fc53d5f390f0d3820e2561b"}}
+    {"id":1602514362591,"src":"SF_CTL5_D0BE3C","dst":"mos","error":{"code":401,"message":"{\"auth_type\": \"digest\",
+    \"nonce\": 1611048929, \"nc\": 1, \"realm\": \"sdbproduct\"}"}}
 
+    {"src":"mos","id":1602514362591,"method":"Config.Get","auth":{"realm":"sdbproduct","username":"serialAdmin",
+    "nonce":1611048929,"cnonce":313673957,"response":"66e9cdd290e93ea623b1f415f10e62a7"}
 
-         Got auth: Realm:sdbproduct, Username:serialAdmin, Nonce: 1611052267, CNonce:748545482, Response:7a374cd93d622a2a9e659389bce62351
-         Got auth: Realm:sdbproduct, Username:serialAdmin, Nonce: 1611052290, CNonce:313673957, Response:2a4d6b45cd34e5d8bdbf5da897bba2ab
-         */
+    Got 401 challenge {"auth_type": "digest", "nonce": 1611049154, "nc": 1, "realm": "sdbproduct"}
 
-
-        /*
-        HA1 = MD5(username:realm:password);
-        HA2 = MD5(method:digestURI);
-        response = MD5(HA1:nonce:HA2);
-         */
-
-        //let nonce = nonce;
-        digestURI.method = "dummy_method";
-        digestURI.path = "dummy_uri";
-
-        let HA1 = md5(user + ":" + realm + ":" + pass);
-        let HA2 = md5(digestURI.method + ":" + digestURI.path);
-        let combined = HA1 + ":" + nonce + ":" + nc + ":" + cnonce + ":" + "auth" + ":" + HA2;
-        let response = md5(combined);
-        /*
-        console.log("HA1: \t",  user + ":" + realm + ":" + pass);
-        console.log("HA2: \t",  digestURI.method + ":" + digestURI.path);
-
-         */
-
-        /*
-        respArr := md5.Sum([]byte(fmt.Sprintf(
-            "%s:%d:%d:%d:%s:%s",
-            ha1, nonce, nc, cnonce, "auth", ha2,
-        )))
-
-         */
+working
+{"src":"mos","id":1373120017684,"method":"Config.Get","auth":{"realm":"sdbproduct","username":"serialAdmin","nonce":1611051797,"cnonce":1955363828,"response":"5ded50da1c0dee25e2f9a56e1ef815b4"}}
+not
+{"src":"rpc","id":1611051886168,"method":"Config.Get","auth":{"realm":"sdbproduct","username":"appuser","cnonce":313673957,"response":"ec3e58ee6fc53d5f390f0d3820e2561b"}}
 
 
-        console.log("\n\n", combined);
-
-        //let response = md5(HA1 + ":" + nonce + HA2); //":00000001:" + cnonce + ":" + qop + ":" + HA2);
-        //let response = md5(combined); //":00000001:" + cnonce + ":" + qop + ":" + HA2);
-        //options.headers.Authorization = "Digest username=\"" + user + "\",realm=\"" + realm + "\",nonce=\"" + nonce + "\",uri=\"" + options.path + "\",cnonce=\"" + cnonce + "\",nc=00000001,algorithm=MD5,response=\"" + response + "\",qop=\"" + qop + "\"";
+     Got auth: Realm:sdbproduct, Username:serialAdmin, Nonce: 1611052267, CNonce:748545482, Response:7a374cd93d622a2a9e659389bce62351
+     Got auth: Realm:sdbproduct, Username:serialAdmin, Nonce: 1611052290, CNonce:313673957, Response:2a4d6b45cd34e5d8bdbf5da897bba2ab
+     */
 
 
-        let newCmd = cmd;// cmdHistory[parsed.id];
+    /*
+    HA1 = MD5(username:realm:password);
+    HA2 = MD5(method:digestURI);
+    response = MD5(HA1:nonce:HA2);
+     */
+
+    //let nonce = nonce;
+    digestURI.method = "dummy_method";
+    digestURI.path = "dummy_uri";
+
+    let HA1 = md5(user + ":" + realm + ":" + pass);
+    let HA2 = md5(digestURI.method + ":" + digestURI.path);
+    let combined = HA1 + ":" + nonce + ":" + nc + ":" + cnonce + ":" + "auth" + ":" + HA2;
+    let response = md5(combined);
+    /*
+    console.log("HA1: \t",  user + ":" + realm + ":" + pass);
+    console.log("HA2: \t",  digestURI.method + ":" + digestURI.path);
+
+     */
+
+    /*
+    respArr := md5.Sum([]byte(fmt.Sprintf(
+        "%s:%d:%d:%d:%s:%s",
+        ha1, nonce, nc, cnonce, "auth", ha2,
+    )))
+
+     */
 
 
-        newCmd['auth'] = {"realm": realm, "username": user, "nonce": nonce, "cnonce": cnonce, "response": response};
 
-        //newCmd.nonce = 'hi there mark';
+    console.log("\n\n", combined);
 
-        console.log("auth " + JSON.stringify(newCmd.auth));
+    //let response = md5(HA1 + ":" + nonce + HA2); //":00000001:" + cnonce + ":" + qop + ":" + HA2);
+    //let response = md5(combined); //":00000001:" + cnonce + ":" + qop + ":" + HA2);
+    //options.headers.Authorization = "Digest username=\"" + user + "\",realm=\"" + realm + "\",nonce=\"" + nonce + "\",uri=\"" + options.path + "\",cnonce=\"" + cnonce + "\",nc=00000001,algorithm=MD5,response=\"" + response + "\",qop=\"" + qop + "\"";
 
-        let textVersion = JSON.stringify(newCmd);
-        console.log("responding: ", textVersion);
 
-        //mybool = false;
+    let newCmd = cmd;// cmdHistory[parsed.id];
 
-        return newCmd;
+
+    newCmd['auth'] = {"realm": realm, "username": user, "nonce": nonce, "cnonce": cnonce, "response": response};
+
+    //newCmd.nonce = 'hi there mark';
+
+    console.log("auth " + JSON.stringify(newCmd.auth));
+
+    let textVersion = JSON.stringify(newCmd);
+    console.log("responding: ", textVersion);
+
+    //mybool = false;
+
+    return newCmd;
+
+}
+
+setTimeout(()=>{
+
+    console.log("startedConnection is ", startedConnection ? 'true' : 'false');
+
+    if (!startedConnection){
+        document.getElementById('status').innerHTML = "ERROR: could not connect to device. Make sure to be on the same wifi network and device is not flashing orange";
+
 
     }
 
-    setTimeout(() => {
+}, 3000);
 
-        console.log("startedConnection is ", startedConnection ? 'true' : 'false');
+ws.onopen = function open() {
 
-        if (!startedConnection) {
-            document.getElementById('status').innerHTML = "ERROR: could not connect to device (" + deviceAddress + "). Make sure to be on the same wifi network and device is not flashing orange";
+    console.log('onopen started');
+
+    startedConnection = true;
+
+    document.getElementById('status').innerHTML = "CONNECTED: Updating device";
 
 
+    //
+
+    let timeout = 0;
+    let increase = 1500;
+
+    setTimeout(()=>{
+
+        pubpem();
+
+    }, timeout +=increase);
+
+
+    setTimeout(()=>{
+
+        getpem();
+
+    }, timeout +=increase);
+
+
+    setTimeout(()=>{
+
+        keypem();
+
+    }, timeout +=increase);
+
+
+    setTimeout(()=>{
+
+        keyget();
+
+    }, timeout +=increase);
+
+    setTimeout(()=>{
+
+        console.log('sending conf8 ');
+
+        conf8();
+
+    }, timeout +=increase);
+
+    setTimeout(()=>{
+
+        console.log('retrieving config.get');
+        ws.send(createCmd('Config.Get', {}));
+
+    }, timeout +=increase);
+
+
+
+    setTimeout(()=>{
+
+        document.getElementById('status').innerHTML = "SUCCESS: Finished update. Please power cycle device by unplugging it, pausing and plugging it back into power";
+
+        //console.log('Calling restart');
+        //ws.send(createCmd('SF.Restart', {}));
+
+    }, timeout +=increase ) ;
+
+
+
+};
+
+function conf8(){
+
+
+    let conf8 = {
+        "conf_acl": "wifi.*,debug.*,device.license",
+        "debug": {
+            "level": 2,
+            "file_level": "mongoose.c=2,esp32_vfs_dev_=2,mgos_pwm_rgb_led.c=2,mgos_ads1x1x.c=2,esp32_bt_gap=2,mgos_vfs=2,mgos_event.c=2,rtttl=2,=3"
+        },
+        "device": {
+            "id": deviceID
+        },
+        "gcp": {
+            "enable": true,
+            "server": "mqtt.2030.ltsapis.goog:8883",
+            "project": "firebase-sdb",
+            "region": "us-central1",
+            "registry": "iot-registry",
+            "device": deviceID,
+            "key": "gcp-" + deviceID + ".key.pem",
+            "ca_cert": "gcp-lts-ca.pem",
+            "token_ttl": 3600,
+            "enable_config": true,
+            "enable_commands": true
+        },
+        "mqtt": {
+            "enable": true,
+            "server": "mqtt.googleapis.com:8883",
+            "ssl_ca_cert": "gcp-lts-ca.pem"
         }
+    };
 
-    }, 3000);
-
-
-    function conf8() {
-
-
-        let conf8 = {
-            "conf_acl": "wifi.*,debug.*,device.license",
-            "debug": {
-                "level": 2,
-                "file_level": "mongoose.c=2,esp32_vfs_dev_=2,mgos_pwm_rgb_led.c=2,mgos_ads1x1x.c=2,esp32_bt_gap=2,mgos_vfs=2,mgos_event.c=2,rtttl=2,=3"
-            },
-            "device": {
-                "id": deviceID
-            },
-            "gcp": {
-                "enable": true,
-                "server": "mqtt.2030.ltsapis.goog:8883",
-                "project": "firebase-sdb",
-                "region": "us-central1",
-                "registry": "iot-registry",
-                "device": deviceID,
-                "key": "gcp-" + deviceID + ".key.pem",
-                "ca_cert": "gcp-lts-ca.pem",
-                "token_ttl": 3600,
-                "enable_config": true,
-                "enable_commands": true
-            },
-            "mqtt": {
-                "enable": true,
-                "server": "mqtt.googleapis.com:8883",
-                "ssl_ca_cert": "gcp-lts-ca.pem"
-            }
-        };
-
-        console.log("\n\nconf8:\n", JSON.stringify(conf8));
+    console.log("\n\nconf8:\n", JSON.stringify(conf8));
 
 //options.method = 'GET';
-        let confBuf = new Buffer.from(JSON.stringify(conf8));
-        params =
-            {
-                "filename": "conf8.json",    // Required. Name of the file to write to.
-                "append": false,          // Optional. Overwrite or append.
-                "data": confBuf.toString('base64')     // Required. Data to write.
-            };
+    let confBuf = new Buffer.from(JSON.stringify(conf8));
+    params =
+        {
+            "filename": "conf8.json",    // Required. Name of the file to write to.
+            "append": false,          // Optional. Overwrite or append.
+            "data": confBuf.toString('base64')     // Required. Data to write.
+        };
 
-        ws.send(createCmd('FS.Put', params));
+    ws.send(createCmd('FS.Put', params));
 
-    }
-
-
-    function pubpem() {
+}
 
 
-        let params =
-            {
-                "filename": "gcp-" + deviceID + ".pub.pem",    // Required. Name of the file to write to.
-                "append": false,          // Optional. Overwrite or append.
-                "data": pub64 //pubBuf.toString('base64')     // Required. Data to write.
-            };
-
-        //let content = JSON.stringify(params);
-        ws.send(createCmd('FS.Put', params));
+function pubpem(){
 
 
-    }
-
-
-    function getpem() {
-
-        let params = {
+    let params =
+        {
             "filename": "gcp-" + deviceID + ".pub.pem",    // Required. Name of the file to write to.
+            "append": false,          // Optional. Overwrite or append.
+            "data": pub64 //pubBuf.toString('base64')     // Required. Data to write.
         };
 
-        let content = JSON.stringify(params);
-        ws.send(createCmd('FS.Get', params));
-
-    }
+    //let content = JSON.stringify(params);
+    ws.send(createCmd('FS.Put', params));
 
 
-    function keypem() {
+}
 
 
-        let params =
-            {
-                "filename": "gcp-" + deviceID + ".key.pem",    // Required. Name of the file to write to.
-                "append": false,          // Optional. Overwrite or append.
-                "data": key64 //pubBuf.toString('base64')     // Required. Data to write.
-            };
+function getpem(){
 
-        let content = JSON.stringify(params);
-        ws.send(createCmd('FS.Put', params));
-
-
-    }
-
-
-    function keyget() {
-
-        let params = {
-            "filename": "gcp-" + deviceID + ".key.pem",    // Required. Name of the file to write to.
-        };
-
-        let content = JSON.stringify(params);
-        ws.send(createCmd('FS.Get', params));
-
-    }
-
-
-    ws.onerror = function incoming(err) {
-
-        console.log('error received: ', err);
-
-    }
-
-    ws.onclose = function incoming(event) {
-
-        console.log('onclose received ', event);
-    }
-
-    ws.onopen = function open() {
-
-        console.log('onopen started');
-
-        startedConnection = true;
-
-        document.getElementById('status').innerHTML = "CONNECTED: Updating device (" + deviceAddress + ")";
-
-
-        //
-
-        let timeout = 0;
-        let increase = 1500;
-
-        setTimeout(() => {
-
-            pubpem();
-
-        }, timeout += increase);
-
-
-        setTimeout(() => {
-
-            getpem();
-
-        }, timeout += increase);
-
-
-        setTimeout(() => {
-
-            keypem();
-
-        }, timeout += increase);
-
-
-        setTimeout(() => {
-
-            keyget();
-
-        }, timeout += increase);
-
-        setTimeout(() => {
-
-            console.log('sending conf8 ');
-
-            conf8();
-
-        }, timeout += increase);
-
-        setTimeout(() => {
-
-            console.log('retrieving config.get');
-            ws.send(createCmd('Config.Get', {}));
-
-        }, timeout += increase);
-
-
-        setTimeout(() => {
-
-            document.getElementById('status').innerHTML = "SUCCESS: Finished update (" + deviceAddress + "). Please power cycle device by unplugging it, pausing and plugging it back into power";
-
-            //console.log('Calling restart');
-            //ws.send(createCmd('SF.Restart', {}));
-
-        }, timeout += increase);
-
-
+    let params = {
+        "filename": "gcp-" + deviceID + ".pub.pem",    // Required. Name of the file to write to.
     };
 
+    let content = JSON.stringify(params);
+    ws.send(createCmd('FS.Get', params));
+
+}
 
 
-    ws.onmessage = function incoming(event) {
-        console.log("received: ", event.data);
+function keypem(){
 
 
-        document.getElementById('text1').innerHTML += "<br><hr><br>" + JSON.stringify(JSON.parse(event.data), null, 4);
+    let params =
+        {
+            "filename": "gcp-" + deviceID + ".key.pem",    // Required. Name of the file to write to.
+            "append": false,          // Optional. Overwrite or append.
+            "data": key64 //pubBuf.toString('base64')     // Required. Data to write.
+        };
 
-        let parsed = JSON.parse(event.data);
+    let content = JSON.stringify(params);
+    ws.send(createCmd('FS.Put', params));
 
-        if (parsed.hasOwnProperty('error')) {
-            //console.log('got error', parsed.error);
-        }
+
+}
+
+
+function keyget(){
+
+    let params = {
+        "filename": "gcp-" + deviceID + ".key.pem",    // Required. Name of the file to write to.
+    };
+
+    let content = JSON.stringify(params);
+    ws.send(createCmd('FS.Get', params));
+
+}
+
+
+let mybool = false;
+ws.onmessage = function incoming(event) {
+    console.log("received: ", event.data);
+
+
+    document.getElementById('text1').innerHTML += "<br><hr><br>" +  JSON.stringify(JSON.parse(event.data), null, 4);
+
+    let parsed = JSON.parse(event.data);
+
+    if (parsed.hasOwnProperty('error')){
+        //console.log('got error', parsed.error);
+    }
 
         // See if unauthorised
-        if (parsed.hasOwnProperty('error') && parsed.error.hasOwnProperty('code') && parsed.error.code == 401) {
+    if (parsed.hasOwnProperty('error') && parsed.error.hasOwnProperty('code') && parsed.error.code == 401){
 
-            console.log("Got 401 challenge", parsed.error.message);
+        console.log("Got 401 challenge", parsed.error.message);
 
-            let challenge = JSON.parse(parsed.error.message);
+        let challenge = JSON.parse(parsed.error.message);
 
-            if (mybool) {
-
-
-                ws.send(textVersion);
+        if (mybool){
 
 
-            }
+            ws.send(textVersion);
+
 
 
         }
 
-    };
 
+    }
 
-}, currentDelay += 500);
+};
 
 
 }).call(this)}).call(this,require("buffer").Buffer)

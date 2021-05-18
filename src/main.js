@@ -113,6 +113,7 @@ class App extends Component {
       ssid: '',
       pass: '',
       status: null,
+        info: null,
       spin: false,
       frames: []};
 
@@ -134,7 +135,14 @@ class App extends Component {
         rpc.onopen = ev => {
             // When RPC is connected, fetch list of supported RPC services
             this.setState({connected: true});
-            rpc.call('RPC.List').then(res => console.log(res));
+            rpc.call('SF.Info').then(res => {
+                console.log(res);
+
+                if (res.src){
+                    this.setState({info: res.result});
+                }
+
+            });
 
             /*
             let myStatusInterval = setInterval(() => {
@@ -171,7 +179,7 @@ class App extends Component {
         const onclick = ev => {
             // Button press. Update device's configuration
             var sta = {enable: true, ssid: state.ssid, pass: state.pass};
-            var config = {wifi: {sta: sta, ap: {enable: false}}};
+            var config = {wifi: {sta: sta}}; //, ap: {enable: false}}};
             // var config = {debug: {level: +state.ssid}};
             this.setState({spin: true});
             this.rpc.call('Config.Set', {config, save: true, reboot: true})
@@ -181,7 +189,11 @@ class App extends Component {
         return html`
 		<div class="container">
 		
-		    <h2 class="content-head is-left">${state.connected ? 'Ready' : 'Not Connected!'}</h2>
+		    <h2 class="content-head is-left">${(state.connected && state.info) ? state.info.id + ' Connected' : 'Not Connected!'}</h2>
+		    
+		    
+		    
+		    
 			<!---<h1>${props.title}</h1>--->
 			
 			<!---
@@ -218,6 +230,9 @@ class App extends Component {
                 <pre class="log white ">
                     ${state.frames.slice(Math.max(state.frames.length - 5, 0)).join('\n')}
                     ${state.connected ? '' : '!! DISCONNECTED, unable to contact to device WS RPC'}
+                    
+                    ${ state.info != null ? "\n******\nDevice: " + state.info.id + "\nFirmware: " + state.info.firmware : '' }
+                    
                 </pre>
                 
             </div>

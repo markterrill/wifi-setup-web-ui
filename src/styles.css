@@ -378,7 +378,7 @@ a.pure-button-primary {
 .log {
     padding: 0 1em;
     word-break: normal;
-    white-space: normal;
+    white-space: pre-wrap;
 }
 
 .tempboxes {
